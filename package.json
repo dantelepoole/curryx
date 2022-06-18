@@ -1,0 +1,27 @@
+{
+  "name": "curryx",
+  "version": "1.0.0",
+  "description": "A curry function that will `require()` the target function if passed a package name or module path instead of a function, works with both explicit or implicit arities, gives the curried functions meaningful names and allows binding the curried function to a custom `this`-object.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dantelepoole/curryx.git"
+  },
+  "keywords": [
+    "curry",
+    "Javascript",
+    "functional"
+  ],
+  "author": "Dante le Poole <dantelepoole@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dantelepoole/curryx/issues"
+  },
+  "homepage": "https://github.com/dantelepoole/curryx#readme",
+  "devDependencies": {
+    "chai": "*"
+  }
+}
