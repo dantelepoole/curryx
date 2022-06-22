@@ -1,6 +1,6 @@
 # curryx
 A curry function that will `require()` the target function if passed a package name or module path instead of a
-function, works with both explicit or implicit arities, gives the curried functions meaningful names and allows
+function, works with both explicit or implicit arities, preserves the curried function's original name and allows
 binding the curried function to a custom `this`-object.
 
 ## Description
@@ -10,9 +10,8 @@ function will be `required()`-ed automatically. Optionally, a property-key may b
 a specific property of the imported object. This allows you to use curryx as a drop-in replacement for Node's 
 `require()`.
 
-The curried function's name is set to the target function's name with the tag "curried" and the arity prepended. This
-makes debugging your code a helluva of a lot easier than debugging a bunch of curried functions that all carry the same
-generic name.
+The curried function will have the same name as the original function. This makes debugging your code a helluva of a
+lot easier than debugging a bunch of curried functions that all carry the same generic name.
 
 The curried function may be bound to or called with a custom `this`-object, which it will propagate to the target
 function.
@@ -74,40 +73,35 @@ const curried_sum = curry2(sum);
 
 Similarly, `ternary` submodule curries functions with ternary arity.
 
-### Dynamic function names
-The curried function's name is set to the target function's name, but tagged with a 'curried'-label and the arity. On
-each curried invocation, the returned function will also be tagged with a 'bound'-label. This dynamic naming of the
-curried function facilitates debugging.
+### Curried function name
+The curried function preserves the original function's name, to facilitate debugging. On each curried invocation, the
+returned function will also be tagged with a 'bound'-label.
 
 ```javascript
 
-const curried_sum = curry(2, sum);
-const increment = curried_sum(1);
+const sum = curry(
+    function sum(a,b) {
+        return (a+b);
+    }
+)
 
-console.log(curried_sum.name); // prints 'curried(2) sum'
-console.log(increment.name); // prints 'bound curried(2) sum'
+const increment = sum(1);
+
+console.log(sum.name); // prints 'sum'
+console.log(increment.name); // prints 'bound sum'
 
 ```
 
-If you curry an anonymous function, the function's name will be displayed as '\<anonymous\>':
+If you curry an anonymous function, the function's name will be empty:
 
 ```javascript
 
 const sum = curry( (a,b) => (a+b) );
-console.log(sum.name); // prints 'curried(2) <anonymous>'
+console.log(sum.name); // prints ''
 
 ```
 
-To get a more descriptive name, name the anonymous function. For example:
-
-```javascript
-
-const sum = curry( function sum(a,b) { return (a+b) } );
-console.log(sum.name); // prints 'curried(2) sum'
-
-```
-
-### Automatic require()s
+### Automatic require()
 Instead of passing the target function itself, you can pass the name of a package or path to a module that exports the
 target function, in which case the target function will be `require()`-ed automatically. This effectively allows you to
 use `curryx` as a drop-in replacement for `require()`:
