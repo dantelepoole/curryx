@@ -185,7 +185,7 @@ To disallow specifying a `this`-object for the target function, `bind()` the tar
 
 ### partial(*function*, ...*args*)
 
-`partial()` works similarly to Javascript's `Function.prototype.bind()` method, except it doesn't allow for passing.
+`partial()` works similarly to Javascript's `Function.prototype.bind()` method, except it doesn't allow for passing
 a `this`-object. So it can only be used for partially applying a function to the given arguments.
 
 ```javascript
