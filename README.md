@@ -16,6 +16,12 @@ lot easier than debugging a bunch of curried functions that all carry the same g
 The curried function may be bound to or called with a custom `this`-object, which it will propagate to the target
 function.
 
+The package also exports convenience functions `binary()`, `ternary()` and `quaternary()` to allow currying a target
+function without having to pass an explicit arity.
+
+Finally, the package exports a `partial()` function for partial function application, which will also `require()` the
+target function if it is passed a string instead of a function.
+
 ## Installation
 
 To install `curryx` type:
@@ -176,6 +182,25 @@ returnthis(1,2) === global; // returns 'true'
 ```
 
 To disallow specifying a `this`-object for the target function, `bind()` the target function before currying it.
+
+### partial(*function*, ...*args*)
+
+`partial()` works similarly to Javascript's `Function.prototype.bind()` method, except it doesn't allow for passing.
+a `this`-passing. So it can only be used for partially applying a function to certain number of arguments.
+
+```javascript
+
+const partial = require('curryx/partial');
+
+function sum(a,b) { return (a+b) }
+
+const increment = partial(sum, 1);
+
+increment(42); // returns 43
+
+```
+
+Like `curryx()`, `partial()` will `require()` the target function if it is passed a string instead of a function.
 
 ## Typescript declarations?
 Nope.
