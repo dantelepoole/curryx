@@ -9,7 +9,7 @@ function countargs(...args) {
     return args.length;
 }
 
-describe(`curryx`, function() {
+describe(`curryx()`, function() {
 
     it(`should throw if the arity is not a number or undefined`,
         function () {
