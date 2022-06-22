@@ -19,7 +19,9 @@ const format = require('util').format;
 
 const prototostring = Object.prototype.toString.call.bind(Object.prototype.toString);
 
-module.exports = function curryx(arity, func) {
+module.exports = curryx;
+
+function curryx(arity, func) {
 
     if( arguments.length === 1 ) [arity, func] = [ARITY_NONE, arity];
 
@@ -39,6 +41,10 @@ module.exports = function curryx(arity, func) {
 
     return curriedfunction;
 }
+
+curryx.binary = require('./binary');
+curryx.ternary = require('./ternary');
+curryx.quaternary = require('./quaternary');
 
 function resolvefunction(path) {
 
