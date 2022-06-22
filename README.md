@@ -75,10 +75,10 @@ const curried_sum = curryx.binary(sum);
 
 ```
 
-Similarly, `ternary` and `quaternary` submodules curry functions with ternary and quaternary arity respectively.
+Similarly, the `ternary` and `quaternary` submodules curry functions with ternary and quaternary arity respectively.
 
 ### Curried function name
-The curried function preserves the original function's name, to facilitate debugging. On each curried invocation, the
+The curried function preserves the original function's name to facilitate debugging. On each curried invocation, the
 returned function will also be tagged with a 'bound'-label.
 
 ```javascript
@@ -89,9 +89,9 @@ const sum = curry(
     }
 )
 
-const increment = sum(1);
-
 console.log(sum.name); // prints 'sum'
+
+const increment = sum(1);
 console.log(increment.name); // prints 'bound sum'
 
 ```
