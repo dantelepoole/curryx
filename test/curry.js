@@ -52,11 +52,13 @@ describe(`curryx`, function() {
         }
     )
 
-    it(`should return a function named "curried(<arity>) <function name>"`,
+    it(`should return a function with the same name as the original function"`,
         function () {
 
             const curried = curry(42, countargs);
-            expect( curried.name ).to.be.equal( 'curried(42) countargs');
+            expect( curried.name ).to.be.equal(countargs.name);
+
+            expect( curry(2, ()=>{}).name ).to.be.equal('');
         }
     )
 

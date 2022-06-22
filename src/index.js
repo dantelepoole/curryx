@@ -7,7 +7,6 @@
 const ARITY_NONE = undefined;
 const CHAR_HASH = '#';
 const CURRY_ERROR = 'CurryError';
-const FUNCTION_ANONYMOUS = '<anonymous>';
 const KEY_NONE = undefined;
 const TYPE_FUNCTION = 'function';
 const TYPE_NUMBER = 'number';
@@ -32,12 +31,11 @@ module.exports = function curryx(arity, func) {
 
           
     // the following rather awkward way of defining the curried function allows us set it's name dynamically
-    const curriedname = `curried(${arity}) ${func.name || FUNCTION_ANONYMOUS}`;
     const curriedfunction = {
-        [curriedname] : function(...args) {
+        [func.name] : function(...args) {
             return (args.length < arity) ? curriedfunction.bind(this, ...args) : func.call(this, ...args);
         }
-    }[curriedname];
+    }[func.name];
 
     return curriedfunction;
 }
