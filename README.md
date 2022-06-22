@@ -58,8 +58,8 @@ const curried_sum = curryx(sum);
 > (especially when using curried functions in a function composition). Provide an explicit arity and the dragons be
 > there no more.
 
-The `curryx` package comes with two convenience functions that implicitly curry with binary or ternary arity
-respectively:
+The `curryx` package comes with three convenience functions that implicitly curry with binary, ternary or quaternary
+arity respectively. These functions are also accessible as methods of `curryx()`.
 
 ```javascript
 
@@ -69,9 +69,13 @@ const curry2 = require('curryx/binary');
 // variadic, 'curry(sum)'
 const curried_sum = curry2(sum);
 
+// alteratively:
+const curryx = require('curryx');
+const curried_sum = curryx.binary(sum);
+
 ```
 
-Similarly, `ternary` submodule curries functions with ternary arity.
+Similarly, `ternary` and `quaternary` submodules curry functions with ternary and quaternary arity respectively.
 
 ### Curried function name
 The curried function preserves the original function's name, to facilitate debugging. On each curried invocation, the
