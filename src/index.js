@@ -17,22 +17,20 @@ const ERR_BAD_FUNCTION = `The path '%s' resolved to a type %s. Expected a functi
 
 const format = require('util').format;
 
-const prototostring = Object.prototype.toString.call.bind(Object.prototype.toString);
-
 module.exports = curryx;
 
 function curryx(arity, func) {
 
     if( arguments.length === 1 ) [arity, func] = [ARITY_NONE, arity];
 
-    if( typeof func !== TYPE_FUNCTION ) func = resolvefunction(func);
+    if( typeof func !== TYPE_FUNCTION ) func = importfunction(func);
 
     arity = (arity === ARITY_NONE) ? func.length
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-          
     // the following rather awkward way of defining the curried function allows us set it's name dynamically
+    // and so preserved the original function's name
     const curriedfunction = {
         [func.name] : function(...args) {
             return (args.length < arity) ? curriedfunction.bind(this, ...args) : func.call(this, ...args);
@@ -46,7 +44,7 @@ curryx.binary = require('./binary');
 curryx.ternary = require('./ternary');
 curryx.quaternary = require('./quaternary');
 
-function resolvefunction(path) {
+function importfunction(path) {
 
     const [module, key] = String(path).split(CHAR_HASH);
     const func = (key === KEY_NONE) ? require(module) : require(module)?.[key];
@@ -71,5 +69,5 @@ function gettype(value) {
     const type = typeof value;
 
     // return the value's class name if value has type object
-    return (type === TYPE_OBJECT) ? prototostring(value).slice(8,-1) : type;
+    return (type === TYPE_OBJECT) ? Object.prototype.toString.call(value).slice(8,-1) : type;
 }
