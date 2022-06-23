@@ -196,7 +196,7 @@ function sum(a,b) { return (a+b) }
 
 const increment = partial(sum, 1);
 
-console.log(increment.name); // prints `bound sum`
+console.log(increment.name); // prints `partial sum`
 increment(42); // returns 43
 
 ```
