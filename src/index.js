@@ -76,8 +76,6 @@ function gettype(value) {
 //
 // function curryx_alternative(arity, func) {
 
-//     const curriedname = `curry ${func.name || '<anonymous>'}`;
-
 //     const curriedfunc = {
 
 //         [func.name] : function (curriedargs, ...args) {
