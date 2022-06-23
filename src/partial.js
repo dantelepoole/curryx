@@ -6,6 +6,7 @@
 
 const CHAR_HASH = '#';
 const ERR_BAD_FUNCTION = `The function has type %s. Expected a function.`;
+const FUNCTION_ANONYMOUS = '<anonymous>';
 const KEY_NONE = undefined;
 const TYPE_FUNCTION = 'function';
 
@@ -13,7 +14,17 @@ module.exports = function partial(func, ...args) {
     
     if( typeof func !== TYPE_FUNCTION ) func = importfunction(func);
 
-    return func.bind(null, ...args);
+    // This awkward way of defining the partially applied function allows setting the function's name dynamically.
+    // Also, avoiding bind() allows the returned function to be bound to a custom 'this'-object.
+    const partialname = `partial ${func.name || FUNCTION_ANONYMOUS}`;
+
+    return {
+
+        [partialname] : function (...additionalargs) {
+            return func.call(this, ...args, ...additionalargs);
+        }
+
+    }[partialname];
 }
 
 function importfunction(path) {
@@ -44,19 +55,3 @@ function gettype(value) {
     // return the value's class name if value has type object
     return (type === TYPE_OBJECT) ? Object.prototype.toString.call(value).slice(8,-1) : type;
 }
-
-// this variant is bindable to a custom `this` since it does not rely on bind()
-//
-// function partial_alternative(func, ...args) {
-
-//     const partialname = `partial ${func.name || '<anonymous>'}`;
-
-//     return {
-
-//         [partialname] : function (...args2) {
-//             return func.call(this, ...args, ...args2);
-//         }
-
-//     }[partialname];
-
-// }

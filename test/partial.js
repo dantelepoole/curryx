@@ -23,10 +23,10 @@ describe(`partial()`, function() {
         }
     )
 
-    it(`should return a bound function`,
+    it(`should set the returned function's name to indicate that is has been partially applied`,
         function () {
             const sum_partial = partial(sum, 1);
-            expect(sum_partial.name).to.be.equal('bound sum');
+            expect(sum_partial.name).to.be.equal('partial sum');
         }
     )
 
@@ -43,7 +43,7 @@ describe(`partial()`, function() {
         }
     )
 
-    it(`should resolve a package name or module path`,
+    it(`should resolve a package name or module path if a string is passed instead of a function`,
         function () {
 
             const format_partial = partial('util#format', 'My name is %s and my age is %d');
