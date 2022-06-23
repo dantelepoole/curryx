@@ -44,3 +44,19 @@ function gettype(value) {
     // return the value's class name if value has type object
     return (type === TYPE_OBJECT) ? Object.prototype.toString.call(value).slice(8,-1) : type;
 }
+
+// this variant is bindable to a custom `this` since it does not rely on bind()
+//
+// function partial_alternative(func, ...args) {
+
+//     const partialname = `partial ${func.name || '<anonymous>'}`;
+
+//     return {
+
+//         [partialname] : function (...args2) {
+//             return func.call(this, ...args, ...args2);
+//         }
+
+//     }[partialname];
+
+// }

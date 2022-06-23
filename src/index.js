@@ -29,8 +29,7 @@ function curryx(arity, func) {
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-    // the following rather awkward way of defining the curried function allows us set it's name dynamically
-    // and so preserved the original function's name
+    // this awkward way of defining the curried function allows us to preserve the target function's original name
     const curriedfunction = {
         [func.name] : function(...args) {
             return (args.length < arity) ? curriedfunction.bind(this, ...args) : func.call(this, ...args);
@@ -71,3 +70,28 @@ function gettype(value) {
     // return the value's class name if value has type object
     return (type === TYPE_OBJECT) ? Object.prototype.toString.call(value).slice(8,-1) : type;
 }
+
+// This variant enables each individual curry-step to be bound to a custom `this` since it does not rely 
+// on `bind()`. Also, it maintains the same function name at each step.
+//
+// function curryx_alternative(arity, func) {
+
+//     const curriedname = `curry ${func.name || '<anonymous>'}`;
+
+//     const curriedfunc = {
+
+//         [func.name] : function (curriedargs, ...args) {
+
+//             if( curriedargs.length + args.length >= arity ) return func.call(this, ...curriedargs, ...args);
+
+//             return {
+//                 [curriedfunc.name] : function(...args2) {
+//                     return curriedfunc.call(this, [...curriedargs, ...args], ...args2);
+//                 }
+//             }[curriedfunc.name];
+//         }
+
+//     }[func.name];
+
+//     return curriedfunc([]);
+// }
