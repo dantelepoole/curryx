@@ -49,9 +49,9 @@ function curryx(arity, func) {
     return initiatecurry([]);
 }
 
-curryx.binary = require('./binary');
-curryx.ternary = require('./ternary');
-curryx.quaternary = require('./quaternary');
+curryx.binary = function curryx_binary(func) { return curryx(2, func) };
+curryx.ternary = function curryx_ternary(func) { return curryx(3, func) };
+curryx.quaternary = function curryx_quarternary(func) { return curryx(4, func) };
 
 function importfunction(path) {
 
