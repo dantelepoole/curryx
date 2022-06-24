@@ -109,6 +109,48 @@ describe(`curryx()`, function() {
                 expect( increment.name ).to.be.equal(`partial sum`);
             }
         )
+
+        it(`should have a binary() method that curries with binary arity`,
+            function () {
+
+                expect(curry.binary).to.be.a('function');
+
+                const curried = curry.binary(countargs);
+
+                expect(curried).to.be.a('function');
+                expect(curried(1)).to.be.a('function');
+                expect(curried(1,2)).to.be.equal(2);
+            }
+        )
+
+        it(`should have a ternary() method that curries with ternary arity`,
+            function () {
+
+                expect(curry.ternary).to.be.a('function');
+
+                const curried = curry.ternary(countargs);
+
+                expect(curried).to.be.a('function');
+                expect(curried(1)).to.be.a('function');
+                expect(curried(1,2)).to.be.a('function');
+                expect(curried(1,2,3)).to.be.equal(3);
+            }
+        )
+
+        it(`should have a quaternary() method that curries with quaternary arity`,
+            function () {
+
+                expect(curry.quaternary).to.be.a('function');
+
+                const curried = curry.quaternary(countargs);
+
+                expect(curried).to.be.a('function');
+                expect(curried(1)).to.be.a('function');
+                expect(curried(1,2)).to.be.a('function');
+                expect(curried(1,2,3)).to.be.a('function');
+                expect(curried(1,2,3,4)).to.be.equal(4);
+            }
+        )
     })
 
 });
