@@ -29,7 +29,7 @@ function curryx(arity, func) {
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-    return initiatecurry(arity, func, []);
+    return initiatecurry(arity, func);
 }
 
 curryx.binary = function binary(func) { return curryx(2, func) };
@@ -38,9 +38,11 @@ curryx.quaternary = function quaternary(func) { return curryx(4, func) };
 
 function initiatecurry(arity, func, curriedargs=[], ...args) {
 
-    if(curriedargs.length + args.length >= arity) return func.call(this, ...curriedargs, ...args);
+    const argumentcount = (curriedargs.length + args.length);
 
-    const funcname = (args.length === 0) ? func.name : `partial ${func.name || FUNCTION_ANONYMOUS}`;
+    if(argumentcount >= arity) return func.call(this, ...curriedargs, ...args);
+
+    const funcname = (argumentcount === 0) ? func.name : `partial ${func.name || FUNCTION_ANONYMOUS}`;
 
     return {
         [funcname] : function(...additionalargs) {
