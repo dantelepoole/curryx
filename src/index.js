@@ -29,29 +29,25 @@ function curryx(arity, func) {
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-    const partialname = `partial ${func.name || '<anonymous>'}`;
-
-    function initiatecurry(curriedargs, ...args) {
-
-        args = [...curriedargs, ...args];
-
-        if(args.length >= arity) return func.apply(this, args);
-
-        const funcname = (args.length === 0) ? func.name : partialname;
-        
-        return {
-            [funcname] : function(...additionalargs) {
-                return initiatecurry.call(this, args, ...additionalargs);
-            }
-        }[funcname];
-    }
-
-    return initiatecurry([]);
+    return initiatecurry(arity, func, []);
 }
 
-curryx.binary = require('./binary');
-curryx.ternary = require('./ternary');
-curryx.quaternary = require('./quaternary');
+curryx.binary = function binary(func) { return curryx(2, func) };
+curryx.ternary = function ternary(func) { return curryx(3, func) };
+curryx.quaternary = function quaternary(func) { return curryx(4, func) };
+
+function initiatecurry(arity, func, curriedargs=[], ...args) {
+
+    if(curriedargs.length + args.length >= arity) return func.call(this, ...curriedargs, ...args);
+
+    const funcname = (args.length === 0) ? func.name : `partial ${func.name || FUNCTION_ANONYMOUS}`;
+
+    return {
+        [funcname] : function(...additionalargs) {
+            return initiatecurry.call(this, arity, func, [...curriedargs, ...args], ...additionalargs);
+        }
+    }[funcname]
+}
 
 function importfunction(path) {
 

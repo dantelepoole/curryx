@@ -43,6 +43,21 @@ describe(`partial()`, function() {
         }
     )
 
+    it(`should propagate its 'this'-value to the target function`,
+        function () {
+
+            const returnthis = partial(function() { return this });
+            expect( returnthis(1,2) ).to.be.equal(global);
+
+            const that = {};
+            expect( returnthis.call(that, 1, 2) ).to.be.equal(that);
+
+            const returnthat = returnthis.bind(that);
+            expect( returnthat(1,2) ).to.be.equal(that);
+
+            expect( returnthis(1,2) ).to.be.equal(global);
+        }
+    )
     it(`should resolve a package name or module path if a string is passed instead of a function`,
         function () {
 
