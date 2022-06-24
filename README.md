@@ -84,8 +84,8 @@ const curried_sum = curryx.binary(sum);
 Similarly, the `ternary` and `quaternary` submodules curry functions with ternary and quaternary arity respectively.
 
 ### Curried function name
-The curried function preserves the original function's name to facilitate debugging. On each curried invocation, the
-returned function will also be tagged with a 'bound'-label.
+The curried function preserves the target function's name to facilitate debugging. On each curried invocation, the
+returned function will also be tagged with a 'partial'-label.
 
 ```javascript
 
@@ -98,7 +98,7 @@ const sum = curry(
 console.log(sum.name); // prints 'sum'
 
 const increment = sum(1);
-console.log(increment.name); // prints 'bound sum'
+console.log(increment.name); // prints 'partial sum'
 
 ```
 
@@ -142,46 +142,22 @@ const sum = curry('./mathutils#sum');
 
 ### Curried functions and *this*
 
-The curried function is a wrapper around the target function. On subsequent invocations, the wrapper function repeatedly
-binds itself to its arguments until the total number of arguments equals or exceeds the arity, at which point the
-target function itself is invoked. The wrapper function invokes the target function with its own `this`-object.
-
-This means that you can specify a custom `this`-object for the curried function (by calling `bind()`, `call()` or
-`apply()` on the curried function) and the curried function will propagate it to the target function.
-
-Only the curried function can be bound to a custom `this`-object, however. Upon currying the initial arguments, you can
-no longer change the `this`-object of the subsequent intermediate (partially applied) functions - they will always
-remain bound to the `this`-object of the curried function at the time it was invoked with the initial arguments.
+As of version 2.0.0, `curryx()` no longer relies on Javascript's `Function.prototype.bind()` method. As a result, a
+curried function can be invoked with a custom `this`-object (using the regular `bind()`, `call()` or `apply()` methods).
 
 ```javascript
 
 const returnthis = curry( function(a,b) { return this } );
 
-returnthis(1,2) === global; // returns 'true'
+const defaultthis = this;
+returnthis(1,2) === defaultthis; // returns 'true'
 
 const that = {};
-const differentthat = {};
-
 returnthis.call(that,1,2) === that; // returns 'true'
-returnthis.call(differentthat,1,2) === differentthat; // returns 'true'
-
-const returnthat = returnthis.bind(that);
-returnthat(1,2) === that; // returns 'true'
-returnthat(1,2) === returnthis(1,2); // returns 'false'
-
-// this does not work: the 'this'-object of the partially applied,
-// intermediate functions cannot be changed
-const returndifferentthat = returnthat.bind(differentthat);
-returndifferentthat(1,2) === differentthat; // returns 'false'
-returndifferentthat(1,2) === that; // returns 'true'
-returndifferentthat(1,2) === returnthat(1,2); // returns 'true'
-
-// the original curried function is not affected
-returnthis(1,2) === global; // returns 'true'
 
 ```
 
-To disallow specifying a `this`-object for the target function, `bind()` the target function before currying it.
+To disallow custom `this`-objects for the target function, `bind()` the target function before currying it.
 
 ### partial(*function*, ...*args*)
 

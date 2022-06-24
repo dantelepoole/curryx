@@ -29,14 +29,24 @@ function curryx(arity, func) {
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-    // this awkward way of defining the curried function allows us to preserve the target function's original name
-    const curriedfunction = {
-        [func.name] : function(...args) {
-            return (args.length < arity) ? curriedfunction.bind(this, ...args) : func.call(this, ...args);
-        }
-    }[func.name];
+    const partialname = `partial ${func.name || '<anonymous>'}`;
 
-    return curriedfunction;
+    function initiatecurry(curriedargs, ...args) {
+
+        args = [...curriedargs, ...args];
+
+        if(args.length >= arity) return func.apply(this, args);
+
+        const funcname = (args.length === 0) ? func.name : partialname;
+        
+        return {
+            [funcname] : function(...additionalargs) {
+                return initiatecurry.call(this, args, ...additionalargs);
+            }
+        }[funcname];
+    }
+
+    return initiatecurry([]);
 }
 
 curryx.binary = require('./binary');
@@ -70,26 +80,3 @@ function gettype(value) {
     // return the value's class name if value has type object
     return (type === TYPE_OBJECT) ? Object.prototype.toString.call(value).slice(8,-1) : type;
 }
-
-// This variant enables each individual curry-step to be bound to a custom `this` since it does not rely 
-// on `bind()`. Also, it maintains the same function name at each step.
-//
-// function curryx_alternative(arity, func) {
-
-//     const curriedfunc = {
-
-//         [func.name] : function (curriedargs, ...args) {
-
-//             if( curriedargs.length + args.length >= arity ) return func.call(this, ...curriedargs, ...args);
-
-//             return {
-//                 [curriedfunc.name] : function(...args2) {
-//                     return curriedfunc.call(this, [...curriedargs, ...args], ...args2);
-//                 }
-//             }[curriedfunc.name];
-//         }
-
-//     }[func.name];
-
-//     return curriedfunc([]);
-// }

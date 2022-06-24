@@ -52,37 +52,37 @@ describe(`curryx()`, function() {
         }
     )
 
-    it(`should return a function with the same name as the original function"`,
-        function () {
-
-            const curried = curry(42, countargs);
-            expect( curried.name ).to.be.equal(countargs.name);
-
-            expect( curry(2, ()=>{}).name ).to.be.equal('');
-        }
-    )
-
     describe(`the curried function`, function() {
 
+        it(`should have the same name as the target function`,
+            function () {
+
+                const curried = curry(42, countargs);
+                expect( curried.name ).to.be.equal(countargs.name);
+
+                expect( curry(2, ()=>{}).name ).to.be.equal('');
+            }
+        )
+
         it(`should cache its arguments on successive invocations until the total number of arguments equals or exceeds the arity`,
-        function () {
+            function () {
 
-            const curried_countargs = curry(3, countargs);
-            expect( curried_countargs ).to.be.a('function');
+                const curried_countargs = curry(3, countargs);
+                expect( curried_countargs ).to.be.a('function');
 
-            const curried_countargs1 = curried_countargs(1);
-            expect( curried_countargs1 ).to.be.a('function');
+                const curried_countargs1 = curried_countargs(1);
+                expect( curried_countargs1 ).to.be.a('function');
 
-            const curried_countargs2 = curried_countargs1(2);
-            expect( curried_countargs2 ).to.be.a('function');
+                const curried_countargs2 = curried_countargs1(2);
+                expect( curried_countargs2 ).to.be.a('function');
 
-            const curried_countargs3 = curried_countargs2(3);
-            expect( curried_countargs3 ).to.equal(3);
+                const curried_countargs3 = curried_countargs2(3);
+                expect( curried_countargs3 ).to.equal(3);
 
-            const curried_countargs4 = curried_countargs2(3,4);
-            expect( curried_countargs4 ).to.equal(4);
-        }
-    )
+                const curried_countargs4 = curried_countargs2(3,4);
+                expect( curried_countargs4 ).to.equal(4);
+            }
+        )
 
         it(`should propagate its 'this'-value to the target function`,
             function () {
@@ -97,6 +97,16 @@ describe(`curryx()`, function() {
                 expect( returnthat(1,2) ).to.be.equal(that);
 
                 expect( returnthis(1,2) ).to.be.equal(global);
+            }
+        )
+
+        it(`should prepend 'partial ' to the target function's name on subsequent currying steps`,
+            function () {
+
+                const curried = curry(2, sum);
+                const increment = curried(1);
+
+                expect( increment.name ).to.be.equal(`partial sum`);
             }
         )
     })
