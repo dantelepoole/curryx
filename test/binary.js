@@ -1,5 +1,4 @@
 const expect = require('chai').expect;
-const curryx = require('../src');
 const curry2 = require('../src/binary');
 
 function countargs(...args) {
@@ -18,12 +17,6 @@ describe(`binary()`, function() {
             expect( curried(1,2) ).to.be.equal(2);
             expect( curried(1,2,3) ).to.be.equal(3);
 
-        }
-    )
-
-    it(`should be accessible as a method of curryx`,
-        function () {
-            expect(curry2).to.be.equal(curryx.binary);
         }
     )
 
