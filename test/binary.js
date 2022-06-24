@@ -21,10 +21,4 @@ describe(`binary()`, function() {
         }
     )
 
-    it(`should be accessible as a method of curryx`,
-        function () {
-            expect(curry2).to.be.equal(curryx.binary);
-        }
-    )
-
 })

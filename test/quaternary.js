@@ -23,10 +23,4 @@ describe(`quaternary()`, function() {
         }
     )
 
-    it(`should be accessible as a method of curryx`,
-        function () {
-            expect(curry4).to.be.equal(curryx.quaternary);
-        }
-    )
-
 })

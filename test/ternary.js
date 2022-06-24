@@ -22,10 +22,4 @@ describe(`ternary()`, function() {
         }
     )
 
-    it(`should be accessible as a method of curryx`,
-        function () {
-            expect(curry3).to.be.equal(curryx.ternary);
-        }
-    )
-
 })
