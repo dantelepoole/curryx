@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const curryx = require('../src');
 const curry3 = require('../src/ternary');
 
 function countargs(...args) {
@@ -20,4 +21,11 @@ describe(`ternary()`, function() {
 
         }
     )
+
+    it(`should be accessible as a method of curryx`,
+        function () {
+            expect(curry3).to.be.equal(curryx.ternary);
+        }
+    )
+
 })

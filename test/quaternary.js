@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const curryx = require('../src');
 const curry4 = require('../src/quaternary');
 
 function countargs(...args) {
@@ -21,4 +22,11 @@ describe(`quaternary()`, function() {
 
         }
     )
+
+    it(`should be accessible as a method of curryx`,
+        function () {
+            expect(curry4).to.be.equal(curryx.quaternary);
+        }
+    )
+
 })

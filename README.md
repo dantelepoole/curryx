@@ -162,11 +162,7 @@ To disallow custom `this`-objects for the target function, `bind()` the target f
 ### partial(*function*, ...*args*)
 
 `partial()` works similarly to Javascript's `Function.prototype.bind()` method, except it doesn't allow for passing
-a `this`-object. So it can only be used for partially applying a function to the given arguments. However, the same
-result can still be achieved by invoked the partially applied function itself with a custom `this`-object (using the
-regular `bind()`, `call()` or `apply()` methods), which it then will forward to the target function.
-
-Like `curryx()`, `partial()` will `require()` the target function if it is passed a string instead of a function.
+a `this`-object. So it can only be used for partially applying a function to the given arguments.
 
 ```javascript
 
@@ -179,12 +175,9 @@ const increment = partial(sum, 1);
 console.log(increment.name); // prints `partial sum`
 increment(42); // returns 43
 
-const someobject = { value:42 };
-const isequaltosomeobject = partial('util#isDeepStrictEqual', someobject);
-
-isequaltosomeobject( { value:42 } ); // returns true
-
 ```
+
+Like `curryx()`, `partial()` will `require()` the target function if it is passed a string instead of a function.
 
 ## Typescript declarations?
 Nope.

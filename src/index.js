@@ -6,8 +6,7 @@
 
 const ARITY_NONE = undefined;
 const CHAR_HASH = '#';
-const CURRYX_ERROR = 'CurryxError';
-const CURRYX_MODE = 'CURRYX_MODE';
+const CURRY_ERROR = 'CurryError';
 const KEY_NONE = undefined;
 const TYPE_FUNCTION = 'function';
 const TYPE_NUMBER = 'number';
@@ -30,16 +29,7 @@ function curryx(arity, func) {
           : (typeof arity === TYPE_NUMBER) ? arity
           : fail(ERR_BAD_ARITY, gettype(arity));
 
-    if( ismodeenhance() ) return curryx_enhance(arity, func);
-
-    return function curriedfunction(...args) {
-        return (args.length < arity) ? curriedfunction.bind(this, ...args) : func.call(this, ...args);
-    }
-}
-
-function curryx_enhance(arity, func) {
-
-    const partialname = `bound ${func.name}`;
+    const partialname = `partial ${func.name || '<anonymous>'}`;
 
     function initiatecurry(curriedargs, ...args) {
 
@@ -59,13 +49,9 @@ function curryx_enhance(arity, func) {
     return initiatecurry([]);
 }
 
-curryx.binary = function curryx_binary(func) { return curryx(2, func) };
-curryx.ternary = function curryx_ternary(func) { return curryx(3, func) };
-curryx.quaternary = function curryx_quarternary(func) { return curryx(4, func) };
-
-function ismodeenhance() {
-    return (process.env[CURRYX_MODE] !== undefined) && (process.env[CURRYX_MODE].toLowerCase() === 'enhance');
-}
+curryx.binary = require('./binary');
+curryx.ternary = require('./ternary');
+curryx.quaternary = require('./quaternary');
 
 function importfunction(path) {
 
@@ -82,7 +68,7 @@ function fail(formatmsg, ...formatargs) {
     const errormessage = format(formatmsg, ...formatargs);
     const error = new Error(errormessage);
 
-    error.name = CURRYX_ERROR;
+    error.name = CURRY_ERROR;
 
     throw error;
 }
