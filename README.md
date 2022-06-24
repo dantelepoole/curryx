@@ -162,7 +162,9 @@ To disallow custom `this`-objects for the target function, `bind()` the target f
 ### partial(*function*, ...*args*)
 
 `partial()` works similarly to Javascript's `Function.prototype.bind()` method, except it doesn't allow for passing
-a `this`-object. So it can only be used for partially applying a function to the given arguments.
+a `this`-object. So it can only be used for partially applying a function to the given arguments. Nevertheless, the
+partially applied function can still be bound to a custom `this`-object (using the regular `bind()`, `call()` or
+`apply()` methods).
 
 ```javascript
 
